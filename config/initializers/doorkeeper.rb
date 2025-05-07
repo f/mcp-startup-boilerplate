@@ -10,7 +10,7 @@ Doorkeeper.configure do
     # raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
     # Put your resource owner authentication logic here.
     # Example implementation:
-    #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+    # User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
     current_user || warden.authenticate!(scope: :user)
   end
 
@@ -30,9 +30,9 @@ Doorkeeper.configure do
   #   end
   # end
 
-  admin_authenticator do |_routes|
-    current_user || warden.authenticate!(scope: :user)
-  end
+  # admin_authenticator do |_routes|
+  #   current_user || warden.authenticate!(scope: :user)
+  # end
 
   # You can use your own model classes if you need to extend (or even override) default
   # Doorkeeper models such as `Application`, `AccessToken` and `AccessGrant.
@@ -252,8 +252,8 @@ Doorkeeper.configure do
   # default_scopes  :public
   # optional_scopes :write, :update
 
-  default_scopes :read
-  optional_scopes :write
+  # default_scopes :read
+  # optional_scopes :write
 
   # Allows to restrict only certain scopes for grant_type.
   # By default, all the scopes will be available for all the grant types.
@@ -268,7 +268,7 @@ Doorkeeper.configure do
   # not in configuration, i.e. +default_scopes+ or +optional_scopes+.
   # (disabled by default)
   #
-  enforce_configured_scopes
+  # enforce_configured_scopes
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
@@ -545,12 +545,8 @@ Doorkeeper.configure do
   # base_metal_controller 'ActionController::API'
 
   # Enable password grant flows
-  grant_flows %w[authorization_code client_credentials password]
+  grant_flows %w[authorization_code client_credentials]
 
   # Allow client applications to use refresh tokens
-  use_refresh_token
-
-  # Define scopes
-  default_scopes :read
-  optional_scopes :write, :profile, :claudeai
+  # use_refresh_token
 end
