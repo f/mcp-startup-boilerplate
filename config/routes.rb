@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
-  use_doorkeeper
+  use_doorkeeper scope: 'auth'
   
   # OAuth application registration API endpoint (no CSRF)
-  post '/oauth/register', to: 'api/oauth_applications#create'
+  post '/oauth/register', to: 'oauth_applications#create'
+  get '/oauth/authorize', to: 'oauth#authorize', as: :authorize_oauth
+  get '/oauth/token', to: 'oauth#token', as: :token_oauth
+  get '/oauth/callback', to: 'oauth#callback', as: :callback_oauth
   
   # OAuth server metadata for discovery
   get '/.well-known/oauth-authorization-server', to: 'oauth_metadata#authorization_server'

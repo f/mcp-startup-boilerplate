@@ -5,7 +5,6 @@ module Api
     def create
       @application = Doorkeeper::Application.find_or_initialize_by(name: application_params[:name])
       @application.assign_attributes(application_params)
-      Rails.logger.info("Application params: #{application_params}")
       if @application.save
         render json: {
           client_id: @application.uid,
