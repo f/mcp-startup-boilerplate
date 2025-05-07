@@ -14,6 +14,26 @@
 # You can customize the options below to fit your needs.
 require 'fast_mcp'
 
+class FastMcp::Transports::AuthenticatedRackTransport < FastMcp::Transports::RackTransport
+  def handle_mcp_request(request, env)
+    auth_header = request.env["HTTP_AUTHORIZATION"]
+    
+    token = auth_header&.gsub('Bearer ', '')
+    access_token = Doorkeeper::AccessToken.by_token(token)
+    if access_token.present?
+      @resource_owner = User.find(access_token.resource_owner_id)
+    else
+      @resource_owner = nil
+    end
+
+    super
+  end
+
+  def resource_owner
+    @resource_owner
+  end
+end
+
 FastMcp.mount_in_rails(
   Rails.application,
   name: Rails.application.class.module_parent_name.underscore.dasherize,
@@ -25,8 +45,8 @@ FastMcp.mount_in_rails(
   allowed_origins: ['localhost', '127.0.0.1', '[::1]', '34.162.102.82', /.*\.ngrok-free\.app/],
   # localhost_only: true, # Set to false to allow connections from other hosts
   # whitelist specific ips to if you want to run on localhost and allow connections from other IPs
-  allowed_ips: ['127.0.0.1', '::1', '34.162.102.82']
-  # authenticate: true,       # Uncomment to enable authentication
+  allowed_ips: ['127.0.0.1', '::1', '34.162.102.82', '34.162.183.95'],
+  authenticate: true,  # Uncomment to enable authentication
   # auth_token: 'your-token', # Required if authenticate: true
 ) do |server|
   Rails.application.config.after_initialize do
