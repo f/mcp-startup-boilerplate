@@ -11,6 +11,6 @@ class SampleTool < ApplicationTool
   def call(id:, prefix: 'Hey')
     user = User.find(id)
 
-    "#{prefix} #{user.first_name} !"
+    "#{prefix} #{user.email} !"
   end
 end

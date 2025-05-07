@@ -1,9 +1,7 @@
 Rails.application.routes.draw do  
   use_doorkeeper
-  post '/oauth/token', to: 'doorkeeper/tokens#create' 
-
-  # Custom OAuth callback route based on Sentry MCP example
-  get '/oauth/callback', to: 'doorkeeper/callback#callback'
+  # Removing redundant route that can cause conflicts with Doorkeeper's built-in token endpoint
+  # post '/oauth/token', to: 'doorkeeper/tokens#create' 
 
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -17,6 +15,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
+  root "home#index"
 
   # OAuth server metadata for discovery
   get '/.well-known/oauth-authorization-server', to: 'application#oauth_metadata'

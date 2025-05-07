@@ -1,0 +1,68 @@
+<h1>Your Approved Applications</h1>
+
+<% if @access_tokens.empty? %>
+  <div class="empty-state">
+    <p>You haven't approved any applications yet.</p>
+  </div>
+<% else %>
+  <div class="applications-container">
+    <% @access_tokens.each do |application, tokens| %>
+      <div class="application-card">
+        <div class="application-header">
+          <h2><%= application.name %></h2>
+          <div class="application-meta">
+            <span class="application-uid">ID: <%= application.uid %></span>
+          </div>
+        </div>
+        <div class="application-details">
+          <div class="detail-item">
+            <span class="detail-label">Redirect URI:</span>
+            <span class="detail-value"><%= application.redirect_uri %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Scopes:</span>
+            <span class="detail-value"><%= application.scopes %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Confidential:</span>
+            <span class="detail-value"><%= application.confidential? ? 'Yes' : 'No' %></span>
+          </div>
+        </div>
+        <div class="token-section">
+          <h3>Access Tokens (<%= tokens.count %>)</h3>
+          <div class="tokens-list">
+            <% tokens.each do |token| %>
+              <div class="token-item">
+                <div class="token-meta">
+                  <div>
+                    <span class="token-label">Created:</span>
+                    <span class="token-value"><%= token.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+                  </div>
+                  <div>
+                    <span class="token-label">Expires:</span>
+                    <span class="token-value">
+                      <% if token.expires_in.nil? %>
+                        Never
+                      <% elsif token.created_at + token.expires_in.seconds < Time.now %>
+                        Expired
+                      <% else %>
+                        <%= (token.created_at + token.expires_in.seconds).strftime("%Y-%m-%d %H:%M:%S") %>
+                      <% end %>
+                    </span>
+                  </div>
+                  <div>
+                    <span class="token-label">Scopes:</span>
+                    <span class="token-value"><%= token.scopes || 'None' %></span>
+                  </div>
+                </div>
+                <div class="token-actions">
+                  <%= button_to "Revoke", oauth_authorized_application_path(application), method: :delete, data: { confirm: "Are you sure you want to revoke this token?" }, class: "revoke-button" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

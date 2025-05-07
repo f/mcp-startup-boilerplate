@@ -8,3 +8,130 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ .applications-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .application-card {
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    background-color: #fff;
+  }
+  
+  .application-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaecef;
+  }
+  
+  .application-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #24292e;
+  }
+  
+  .application-meta {
+    color: #586069;
+    font-size: 0.9rem;
+  }
+  
+  .application-details {
+    margin-bottom: 20px;
+  }
+  
+  .detail-item {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    min-width: 120px;
+    color: #24292e;
+  }
+  
+  .detail-value {
+    flex: 1;
+    word-break: break-all;
+  }
+  
+  .token-section {
+    margin-top: 20px;
+  }
+  
+  .token-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eaecef;
+  }
+  
+  .tokens-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .token-item {
+    padding: 15px;
+    background-color: #f6f8fa;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .token-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .token-label {
+    font-weight: 600;
+    color: #24292e;
+    margin-right: 10px;
+  }
+  
+  .token-value {
+    color: #586069;
+  }
+  
+  .token-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .revoke-button {
+    padding: 6px 12px;
+    background-color: #d73a49;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .revoke-button:hover {
+    background-color: #cb2431;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #586069;
+    background-color: #f6f8fa;
+    border-radius: 6px;
+    margin-top: 20px;
+  }
+  
