@@ -24,7 +24,7 @@ A robust, free, ready-to-use Rails boilerplate for building AI-powered applicati
 ### 1. Clone the repository
 
 ```bash
-git clone https://your-repository-url.git
+git clone https://github.com/f/mcp-startup-boilerplate mcp-startup
 cd mcp-startup
 ```
 
