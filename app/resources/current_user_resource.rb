@@ -7,7 +7,6 @@ class CurrentUserResource < ApplicationResource
   mime_type 'application/json'
 
   def content
-    current_user = CurrentUserResource.server.transport.resource_owner
     JSON.generate({
       id: current_user.id,
       email: current_user.email,

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Account | <%= Rails.application.class.module_parent_name %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <%= stylesheet_link_tag "tailwind", "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex flex-col min-h-screen">
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <%= link_to root_path, class: "text-2xl font-bold text-indigo-600" do %>
+              <%= Rails.application.class.module_parent_name %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow">
+      <div class="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+          <% flash.each do |key, value| %>
+            <% flash_class = case key.to_sym
+                              when :notice then "bg-blue-50 border-blue-400 text-blue-700"
+                              when :alert, :error then "bg-red-50 border-red-400 text-red-700"
+                              when :success then "bg-green-50 border-green-400 text-green-700"
+                              else "bg-gray-50 border-gray-400 text-gray-700"
+                              end %>
+            <div class="<%= flash_class %> p-4 mb-6 border rounded-md">
+              <%= value %>
+            </div>
+          <% end %>
+          
+          <%= yield %>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-sm text-gray-500">
+          &copy; <%= Date.today.year %> <%= Rails.application.class.module_parent_name %>. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html> 

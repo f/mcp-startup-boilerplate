@@ -1,68 +1,89 @@
-<h1>Your Approved Applications</h1>
+<% content_for :title, "Your Applications" %>
 
-<% if @access_tokens.empty? %>
-  <div class="empty-state">
-    <p>You haven't approved any applications yet.</p>
-  </div>
-<% else %>
-  <div class="applications-container">
-    <% @access_tokens.each do |application, tokens| %>
-      <div class="application-card">
-        <div class="application-header">
-          <h2><%= application.name %></h2>
-          <div class="application-meta">
-            <span class="application-uid">ID: <%= application.uid %></span>
-          </div>
-        </div>
-        <div class="application-details">
-          <div class="detail-item">
-            <span class="detail-label">Redirect URI:</span>
-            <span class="detail-value"><%= application.redirect_uri %></span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Scopes:</span>
-            <span class="detail-value"><%= application.scopes %></span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Confidential:</span>
-            <span class="detail-value"><%= application.confidential? ? 'Yes' : 'No' %></span>
-          </div>
-        </div>
-        <div class="token-section">
-          <h3>Access Tokens (<%= tokens.count %>)</h3>
-          <div class="tokens-list">
-            <% tokens.each do |token| %>
-              <div class="token-item">
-                <div class="token-meta">
-                  <div>
-                    <span class="token-label">Created:</span>
-                    <span class="token-value"><%= token.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
-                  </div>
-                  <div>
-                    <span class="token-label">Expires:</span>
-                    <span class="token-value">
-                      <% if token.expires_in.nil? %>
-                        Never
-                      <% elsif token.created_at + token.expires_in.seconds < Time.now %>
-                        Expired
-                      <% else %>
-                        <%= (token.created_at + token.expires_in.seconds).strftime("%Y-%m-%d %H:%M:%S") %>
-                      <% end %>
-                    </span>
-                  </div>
-                  <div>
-                    <span class="token-label">Scopes:</span>
-                    <span class="token-value"><%= token.scopes || 'None' %></span>
-                  </div>
-                </div>
-                <div class="token-actions">
-                  <%= button_to "Revoke", oauth_authorized_application_path(application), method: :delete, data: { confirm: "Are you sure you want to revoke this token?" }, class: "revoke-button" %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
+<div class="w-full">
+  <h1 class="text-3xl font-bold text-gray-900 mb-8">Your Approved Applications</h1>
+
+  <% if @access_tokens.empty? %>
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="mt-2 text-lg font-medium text-gray-900">No applications</h3>
+        <p class="mt-1 text-sm text-gray-500">You haven't approved any applications yet.</p>
       </div>
-    <% end %>
-  </div>
-<% end %>
+    </div>
+  <% else %>
+    <div class="space-y-6">
+      <% @access_tokens.each do |application, tokens| %>
+        <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-medium text-gray-900"><%= application.name %></h2>
+              <span class="px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+                ID: <%= application.uid %>
+              </span>
+            </div>
+          </div>
+          
+          <div class="px-4 py-5 sm:p-6">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">Redirect URI</dt>
+                <dd class="mt-1 text-sm text-gray-900 break-all"><%= application.redirect_uri %></dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">Scopes</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= application.scopes.present? ? application.scopes : 'None' %></dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">Confidential</dt>
+                <dd class="mt-1 text-sm text-gray-900"><%= application.confidential? ? 'Yes' : 'No' %></dd>
+              </div>
+            </dl>
+          </div>
+          
+          <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Access Tokens (<%= tokens.count %>)</h3>
+            <div class="space-y-4">
+              <% tokens.each do |token| %>
+                <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                  <div class="flex flex-col sm:flex-row justify-between">
+                    <div class="grid grid-cols-1 gap-y-2 sm:grid-cols-3 gap-x-4 mb-4 sm:mb-0">
+                      <div>
+                        <span class="text-xs font-medium text-gray-500 block">Created</span>
+                        <span class="text-sm text-gray-900"><%= token.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+                      </div>
+                      <div>
+                        <span class="text-xs font-medium text-gray-500 block">Expires</span>
+                        <span class="text-sm text-gray-900">
+                          <% if token.expires_in.nil? %>
+                            Never
+                          <% elsif token.created_at + token.expires_in.seconds < Time.now %>
+                            <span class="text-red-600">Expired</span>
+                          <% else %>
+                            <%= (token.created_at + token.expires_in.seconds).strftime("%Y-%m-%d %H:%M:%S") %>
+                          <% end %>
+                        </span>
+                      </div>
+                      <div>
+                        <span class="text-xs font-medium text-gray-500 block">Scopes</span>
+                        <span class="text-sm text-gray-900"><%= token.scopes.present? ? token.scopes : 'None' %></span>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <%= button_to "Revoke", oauth_authorized_application_path(application), 
+                          method: :delete, 
+                          data: { confirm: "Are you sure you want to revoke this token?" }, 
+                          class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
