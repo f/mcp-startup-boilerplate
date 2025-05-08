@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  tool_name: MyString
+  cost_in_cents: 1
+  timestamp: 2025-05-08 18:19:11
+  processed: false
+  stripe_charge_id: MyString
+
+two:
+  user: two
+  tool_name: MyString
+  cost_in_cents: 1
+  timestamp: 2025-05-08 18:19:11
+  processed: false
+  stripe_charge_id: MyString

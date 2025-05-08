@@ -4,8 +4,10 @@ require 'fast_mcp'
 
 class FastMcp::Transports::AuthenticatedRackTransport < FastMcp::Transports::RackTransport
   def handle_mcp_request(request, env)
+    return super if exempt_from_auth?(request.path)
+
     auth_header = request.env["HTTP_AUTHORIZATION"]
-    
+
     token = auth_header&.gsub('Bearer ', '')
     access_token = Doorkeeper::AccessToken.by_token(token)
     # Check if the access token exists and is not revoked

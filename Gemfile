@@ -72,3 +72,11 @@ gem "fast-mcp", "~> 1.3"
 
 # Add HTTParty for HTTP requests
 gem 'httparty'
+
+# Payment processing
+gem 'stripe', '~> 9.1'
+
+# Pagination
+gem 'kaminari', '~> 1.2.2'
+
+gem "dotenv", "~> 3.1"

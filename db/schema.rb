@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_06_140210) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_08_154016) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_140210) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "user_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "stripe_subscription_id"
+    t.string "subscription_type"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stripe_subscription_id"], name: "index_user_subscriptions_on_stripe_subscription_id", unique: true
+    t.index ["subscription_type"], name: "index_user_subscriptions_on_subscription_type"
+    t.index ["user_id"], name: "index_user_subscriptions_on_user_id"
+  end
+
+  create_table "user_tool_usages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "tool_name"
+    t.integer "price_cents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "charge_id"
+    t.datetime "refunded_at"
+    t.string "refund_id"
+    t.index ["charge_id"], name: "index_user_tool_usages_on_charge_id"
+    t.index ["tool_name"], name: "index_user_tool_usages_on_tool_name"
+    t.index ["user_id"], name: "index_user_tool_usages_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -64,6 +91,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_140210) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_customer_id"
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -72,4 +101,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_140210) do
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
+  add_foreign_key "user_subscriptions", "users"
+  add_foreign_key "user_tool_usages", "users"
 end

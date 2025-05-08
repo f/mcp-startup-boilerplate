@@ -1,0 +1,186 @@
+<!-- Subscription Management Dashboard -->
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="px-4 py-6 sm:px-0">
+    <div class="border-b border-gray-200 pb-5 mb-6">
+      <h1 class="text-2xl font-bold leading-tight text-gray-900">Subscription Management</h1>
+      <p class="mt-2 text-sm text-gray-500">Manage your calculator subscriptions and view usage history</p>
+    </div>
+
+    <!-- Active Subscription Section -->
+    <div class="bg-white overflow-hidden shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg leading-6 font-medium text-gray-900">Current Subscription</h2>
+        
+        <% if @active_subscription %>
+          <div class="mt-4 bg-gray-50 p-4 rounded-md">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Active
+                </span>
+                <p class="mt-2 text-base font-medium text-gray-900">
+                  <%= @active_subscription.subscription_type.titleize %> Plan
+                </p>
+                <p class="mt-1 text-sm text-gray-500">
+                  Started: <%= @active_subscription.starts_at.strftime("%B %d, %Y") %>
+                </p>
+                <% if @active_subscription.ends_at %>
+                  <p class="text-sm text-gray-500">
+                    Expires: <%= @active_subscription.ends_at.strftime("%B %d, %Y") %>
+                  </p>
+                <% end %>
+              </div>
+              
+              <div>
+                <%= button_to "Cancel Subscription", subscription_path(@active_subscription), 
+                    method: :delete, 
+                    class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+                    data: { confirm: "Are you sure you want to cancel your subscription?" } %>
+              </div>
+            </div>
+            
+            <div class="mt-4">
+              <h3 class="text-sm font-medium text-gray-900">Subscription Benefits</h3>
+              <ul class="mt-2 pl-5 list-disc text-sm text-gray-600 space-y-1">
+                <% if @active_subscription.enterprise? %>
+                  <li>Access to all calculator tools</li>
+                  <li>$0.03 per tool call (40% discount)</li>
+                  <li>Priority support</li>
+                  <li>Advanced features</li>
+                <% else %>
+                  <li>Access to all calculator tools</li>
+                  <li>$0.03 per tool call (40% discount)</li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% else %>
+          <div class="mt-4 bg-gray-50 p-4 rounded-md">
+            <p class="text-gray-700">You don't have an active subscription.</p>
+            <p class="mt-2 text-sm text-gray-500">
+              Subscribe to get discounted rates on calculator tool usage.
+            </p>
+            <div class="mt-4">
+              <%= link_to "Subscribe Now", new_subscription_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Usage History Section -->
+    <div class="bg-white overflow-hidden shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg leading-6 font-medium text-gray-900">Recent Tool Usage</h2>
+          <p class="text-sm text-gray-500">
+            Total spent: $<%= sprintf('%.2f', current_user.total_spent_cents / 100.0) %>
+          </p>
+        </div>
+        
+        <div class="mt-4 overflow-x-auto">
+          <% if @tool_usage.any? %>
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tool</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @tool_usage.each do |usage| %>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <%= usage.tool_name.demodulize %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= usage.created_at.strftime("%b %d, %Y %H:%M") %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      $<%= sprintf('%.2f', usage.price_cents / 100.0) %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% if usage.refunded_at %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Refunded
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Completed
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="py-4 text-center text-sm text-gray-500">
+              <p>You haven't used any tools yet.</p>
+            </div>
+          <% end %>
+        </div>
+        
+        <% if @tool_usage.any? %>
+          <div class="mt-4 text-right">
+            <%= link_to "View All Usage", call_history_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Subscription History Section -->
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg leading-6 font-medium text-gray-900">Subscription History</h2>
+        
+        <div class="mt-4 overflow-x-auto">
+          <% if @subscription_history.any? %>
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Started</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ended</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @subscription_history.each do |subscription| %>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <%= subscription.subscription_type.titleize %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= subscription.starts_at.strftime("%b %d, %Y") %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= subscription.ends_at ? subscription.ends_at.strftime("%b %d, %Y") : "Active" %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% if subscription.active? %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Active
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          Expired
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="py-4 text-center text-sm text-gray-500">
+              <p>You don't have any subscription history.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

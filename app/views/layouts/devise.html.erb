@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Account | <%= Rails.application.class.module_parent_name %></title>
+  <title>Account | MCP Calculator Startup</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -18,7 +18,7 @@
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <%= link_to root_path, class: "text-2xl font-bold text-indigo-600" do %>
-              <%= Rails.application.class.module_parent_name %>
+              MCP Calculator
             <% end %>
           </div>
         </div>
@@ -26,8 +26,8 @@
     </header>
 
     <main class="flex-grow">
-      <div class="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+      <div class="max-w-md mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white py-8 px-6 shadow-md rounded-lg sm:px-10 border border-gray-100">
           <% flash.each do |key, value| %>
             <% flash_class = case key.to_sym
                               when :notice then "bg-blue-50 border-blue-400 text-blue-700"
@@ -46,9 +46,12 @@
     </main>
 
     <footer class="bg-white border-t border-gray-200 mt-auto">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
         <p class="text-center text-sm text-gray-500">
-          &copy; <%= Date.today.year %> <%= Rails.application.class.module_parent_name %>. All rights reserved.
+          &copy; <%= Date.today.year %> MCP Calculator Startup. All rights reserved.
+        </p>
+        <p class="text-center text-xs text-gray-400 mt-1">
+          Compatible with Claude Integrations and other MCP clients
         </p>
       </div>
     </footer>

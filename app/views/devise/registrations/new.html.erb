@@ -1,14 +1,23 @@
 <div class="sm:mx-auto sm:w-full">
-  <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 mb-8">Create an account</h2>
+  <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 mb-6">Start your free trial</h2>
+  <p class="text-center text-sm text-gray-600 mb-8">Access premium calculation tools for your business</p>
 </div>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6" }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div>
+    <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= f.text_field :name, autofocus: true, placeholder: "Your Name",
+          class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
     <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+      <%= f.email_field :email, autocomplete: "email", placeholder: "your-email@example.com",
           class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
     </div>
   </div>
@@ -32,9 +41,18 @@
     </div>
   </div>
 
+  <div class="flex items-center mt-5">
+    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" required>
+    <label class="ml-2 block text-xs text-gray-700">I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a></label>
+  </div>
+
   <div>
-    <%= f.submit "Sign up", class: "flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    <%= f.submit "Create Account", class: "flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<div class="mt-5 pt-4 border-t border-gray-200">
+  <p class="text-xs text-center text-gray-500">No credit card required for trial. Compatible with Claude AI and other MCP clients.</p>
+</div>

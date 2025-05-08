@@ -1,5 +1,6 @@
 <div class="sm:mx-auto sm:w-full">
-  <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 mb-8">Forgot your password?</h2>
+  <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 mb-6">Reset your password</h2>
+  <p class="text-center text-sm text-gray-600 mb-8">Enter your email to receive password reset instructions</p>
 </div>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
@@ -8,14 +9,18 @@
   <div>
     <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
     <div class="mt-1">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email",
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "your-email@example.com",
           class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
     </div>
   </div>
 
   <div>
-    <%= f.submit "Send reset instructions", class: "flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    <%= f.submit "Send Reset Instructions", class: "flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<div class="mt-6 text-center">
+  <p class="text-xs text-gray-500">If you continue to have trouble, please contact <a href="mailto:support@mcpcalculator.com" class="text-indigo-600 hover:text-indigo-500">support@mcpcalculator.com</a></p>
+</div>

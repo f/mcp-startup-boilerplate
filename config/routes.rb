@@ -14,8 +14,24 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  # Landing page for non-authenticated users
+  get 'landing', to: 'home#landing'
+  
+  # Dashboard and authenticated routes
+  get 'dashboard', to: 'home#index', as: :dashboard
+  get 'ai_apps', to: 'home#ai_apps', as: :ai_apps
+  get 'call_history', to: 'home#call_history', as: :call_history
+  
+  # Subscription management
+  resources :subscriptions, only: [:index, :new, :create, :destroy]
+  get 'subscriptions/success', to: 'subscriptions#success', as: :subscription_success
+  get 'subscriptions/cancel', to: 'subscriptions#cancel', as: :subscription_cancel
+  
+  # Stripe webhook endpoints
+  post 'webhooks/stripe', to: 'webhooks#stripe'
+
   # Defines the root path route ("/")
-  root "home#index"
+  root "home#landing"
 
   # OAuth server metadata for discovery
   get '/.well-known/oauth-authorization-server', to: 'application#oauth_metadata'

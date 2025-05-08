@@ -1,0 +1,150 @@
+<% content_for :title, "Call History" %>
+
+<!-- Tool Usage Call History -->
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="px-4 py-6 sm:px-0">
+    <div class="border-b border-gray-200 pb-5 mb-6">
+      <h1 class="text-2xl font-bold leading-tight text-gray-900">Tool Usage History</h1>
+      <p class="mt-2 text-sm text-gray-500">View your calculator tool usage history and charges</p>
+    </div>
+
+    <!-- Usage Statistics -->
+    <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Total Calls -->
+          <div class="bg-gray-50 p-4 rounded-md">
+            <h3 class="text-sm font-medium text-gray-500">Total Calls</h3>
+            <p class="mt-1 text-3xl font-semibold text-gray-900"><%= @total_calls %></p>
+          </div>
+          
+          <!-- Total Spent -->
+          <div class="bg-gray-50 p-4 rounded-md">
+            <h3 class="text-sm font-medium text-gray-500">Total Spent</h3>
+            <p class="mt-1 text-3xl font-semibold text-gray-900">$<%= sprintf('%.2f', @total_spent / 100.0) %></p>
+          </div>
+          
+          <!-- Average Cost -->
+          <div class="bg-gray-50 p-4 rounded-md">
+            <h3 class="text-sm font-medium text-gray-500">Average Cost Per Call</h3>
+            <% avg_cost = @total_calls > 0 ? @total_spent.to_f / @total_calls : 0 %>
+            <p class="mt-1 text-3xl font-semibold text-gray-900">$<%= sprintf('%.2f', avg_cost / 100.0) %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tool Usage Distribution -->
+    <% if @usage_by_tool.any? %>
+      <div class="bg-white shadow rounded-lg mb-8">
+        <div class="px-4 py-5 sm:p-6">
+          <h2 class="text-lg font-medium text-gray-900 mb-4">Usage by Tool</h2>
+          <div class="space-y-4">
+            <% @usage_by_tool.each do |tool| %>
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex-1">
+                    <h3 class="text-sm font-medium text-gray-900"><%= tool.tool_name.demodulize %></h3>
+                  </div>
+                  <div class="ml-4 flex-shrink-0 flex space-x-4">
+                    <p class="text-sm text-gray-500"><%= tool.count %> calls</p>
+                    <p class="text-sm text-gray-500">$<%= sprintf('%.2f', tool.total.to_f / 100.0) %></p>
+                  </div>
+                </div>
+                <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
+                  <% percentage = @total_calls > 0 ? (tool.count.to_f / @total_calls * 100).round : 0 %>
+                  <div class="bg-indigo-600 h-2 rounded-full" style="width: <%= percentage %>%"></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Detailed History Table -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-5 sm:p-6">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Detailed Usage History</h2>
+        
+        <% if @tool_usages.any? %>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tool</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Charge ID</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @tool_usages.each do |usage| %>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <%= usage.tool_name.demodulize %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <%= usage.created_at.strftime("%b %d, %Y %H:%M") %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      $<%= sprintf('%.2f', usage.price_cents / 100.0) %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% if usage.refunded_at %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Refunded
+                        </span>
+                      <% else %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Completed
+                        </span>
+                      <% end %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs">
+                      <%= usage.charge_id.present? ? usage.charge_id : 'Subscription' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div class="py-3 flex items-center justify-between border-t border-gray-200">
+              <div class="flex-1 flex justify-between sm:hidden">
+                <%= link_to_prev_page @tool_usages, 'Previous', class: "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+                <%= link_to_next_page @tool_usages, 'Next', class: "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+              </div>
+              <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <p class="text-sm text-gray-700">
+                    Showing <span class="font-medium"><%= @tool_usages.offset_value + 1 %></span> to 
+                    <span class="font-medium"><%= @tool_usages.offset_value + @tool_usages.count %></span> of 
+                    <span class="font-medium"><%= @tool_usages.total_count %></span> results
+                  </p>
+                </div>
+                <div>
+                  <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <%= paginate @tool_usages %>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="py-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No tool usage yet</h3>
+            <p class="mt-1 text-sm text-gray-500">You haven't used any calculator tools yet.</p>
+            <div class="mt-6">
+              <%= link_to "Go to Tools", ai_apps_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -31,7 +31,7 @@ module Doorkeeper
       {
         name: params[:client_name],
         redirect_uri: Array(params[:redirect_uris]).join("\n"),
-        scopes: params[:scope],
+        scopes: params[:scope].to_s + " read",
         confidential: false
       }
     end

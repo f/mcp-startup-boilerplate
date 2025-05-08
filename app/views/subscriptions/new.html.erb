@@ -1,0 +1,106 @@
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="px-4 py-6 sm:px-0">
+    <div class="border-b border-gray-200 pb-5 mb-6">
+      <h1 class="text-2xl font-bold leading-tight text-gray-900">Choose a Subscription Plan</h1>
+      <p class="mt-2 text-sm text-gray-500">Select a plan that matches your calculation needs</p>
+    </div>
+    
+    <!-- Subscription Plan Options -->
+    <div class="mt-12 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8">
+      <!-- Standard Plan -->
+      <div class="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col">
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-gray-900">Standard Plan</h3>
+          
+          <p class="mt-4 flex items-baseline text-gray-900">
+            <span class="text-5xl font-extrabold tracking-tight">$0.03</span>
+            <span class="ml-1 text-xl font-semibold">/call</span>
+          </p>
+          <p class="mt-1 text-sm text-gray-500">40% savings compared to pay-as-you-go</p>
+          
+          <ul role="list" class="mt-6 space-y-3">
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Access to all calculator tools</span>
+            </li>
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Basic email support</span>
+            </li>
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">100 calls monthly</span>
+            </li>
+          </ul>
+        </div>
+        
+        <%= form_with url: subscriptions_path, method: :post, data: { turbo: false }, class: "mt-8" do %>
+          <%= hidden_field_tag :subscription_type, UserSubscription::TYPES[:standard] %>
+          <button type="submit" class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-5 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Subscribe to Standard
+          </button>
+        <% end %>
+      </div>
+      
+      <!-- Enterprise Plan -->
+      <div class="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col">
+        <div class="flex-1">
+          <h3 class="text-xl font-semibold text-gray-900">Enterprise Plan</h3>
+          
+          <p class="mt-4 flex items-baseline text-gray-900">
+            <span class="text-5xl font-extrabold tracking-tight">$0.05</span>
+            <span class="ml-1 text-xl font-semibold">/call</span>
+          </p>
+          <p class="mt-1 text-sm text-gray-500">Best value for business customers</p>
+          
+          <ul role="list" class="mt-6 space-y-3">
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Access to all calculator tools</span>
+            </li>
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Priority support with 24h response</span>
+            </li>
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Unlimited calls monthly</span>
+            </li>
+            <li class="flex space-x-3">
+              <svg class="flex-shrink-0 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-500">Advanced functionality</span>
+            </li>
+          </ul>
+        </div>
+        
+        <%= form_with url: subscriptions_path, method: :post, data: { turbo: false }, class: "mt-8" do %>
+          <%= hidden_field_tag :subscription_type, UserSubscription::TYPES[:enterprise] %>
+          <button type="submit" class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-5 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Subscribe to Enterprise
+          </button>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="mt-10 text-center">
+      <p class="text-sm text-gray-500">All subscriptions are billed monthly. You can cancel at any time.</p>
+      <div class="mt-4">
+        <%= link_to "Return to Dashboard", dashboard_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+      </div>
+    </div>
+  </div>
+</div> 

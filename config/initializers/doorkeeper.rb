@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Doorkeeper.configure do
+  # Detailed: https://github.com/doorkeeper-gem/doorkeeper/blob/main/lib/generators/doorkeeper/templates/initializer.rb
   orm :active_record
 
   resource_owner_authenticator do
@@ -15,5 +16,6 @@ Doorkeeper.configure do
   enable_application_owner confirmation: false
   access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param
   realm "MCP"
-  grant_flows %w[authorization_code client_credentials]
+  default_scopes :read
+  grant_flows %w[authorization_code refresh_token]
 end
