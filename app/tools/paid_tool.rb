@@ -11,10 +11,10 @@ class PaidTool < ApplicationTool
   end
   
   # Execute the tool action after charging the user
-  def call
+  def execute
     return unless charge_user
     
-    paid_call
+    super
   end
   
   private
@@ -44,13 +44,10 @@ class PaidTool < ApplicationTool
       true
     rescue Stripe::CardError => e
       # Card was declined
-      self.error = "Payment failed: #{e.message}"
-      false
+      raise PaymentError, "Payment failed: #{e.message}"
     rescue => e
       # Something else happened
-      self.error = "An error occurred processing the payment"
-      Rails.logger.error "Payment error: #{e.message}"
-      false
+      raise PaymentError, "An error occurred processing the payment"
     end
   end
   

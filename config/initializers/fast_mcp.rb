@@ -40,7 +40,7 @@ FastMcp.mount_in_rails(
   authenticate: true,  # Uncomment to enable authentication
 ) do |server|
   Rails.application.config.after_initialize do
-    server.register_tools(*ApplicationTool.descendants)
+    server.register_tools(*ApplicationTool.descendants.without(PaidTool))
     server.register_resources(*ApplicationResource.descendants)
   end
 end

@@ -8,7 +8,9 @@ class FinancialCalculatorTool < PaidTool
     required(:term_years).filled(:integer).description("Loan term in years")
   end
 
-  def paid_call(principal:, interest_rate:, term_years:)
+  def call(principal:, interest_rate:, term_years:)
+    return { error: "User has no active subscription" } unless charge_user
+
     # Calculate monthly mortgage payment
     monthly_rate = (interest_rate / 100) / 12
     num_payments = term_years * 12
@@ -30,6 +32,6 @@ class FinancialCalculatorTool < PaidTool
   # Override default price in cents (optional)
   def price_cents
     # This is a complex calculation, so we charge more
-    8 # $0.08 per call
+    80 # $0.08 per call
   end
 end 
