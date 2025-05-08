@@ -114,6 +114,11 @@ class YourTool < ApplicationTool
 
   def call(param_name:)
     # Your implementation
+    
+    # Access the current authenticated user
+    user = current_user
+    # Do something with the user data
+    { user_id: user.id, result: "Processed data for #{user.email}" }
   end
 end
 ```
@@ -132,14 +137,31 @@ class YourResource < ApplicationResource
   mime_type 'application/json'
 
   def content
+    # Access the current authenticated user
+    user = current_user
+    
     JSON.generate({
-      # Your data here
+      user_id: user.id,
+      email: user.email,
+      # Additional user-specific data
+      custom_data: user.custom_data
     })
   end
 end
 ```
 
 2. Register the resource in your MCP configuration
+
+### Working with Current User
+
+Both MCP Tools and Resources have access to the `current_user` method, which returns the authenticated user from the OAuth token. This allows you to:
+
+- Retrieve user-specific data
+- Perform user-authorized operations
+- Maintain security by scoping operations to the authenticated user
+- Build personalized AI experiences based on user context
+
+For security reasons, always verify user permissions before exposing sensitive data or performing critical operations.
 
 ## 🛡️ Security Considerations
 
