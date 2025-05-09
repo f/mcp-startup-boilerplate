@@ -74,7 +74,7 @@ gem "fast-mcp", "~> 1.3"
 gem 'httparty'
 
 # Payment processing
-gem 'stripe', '~> 9.1'
+gem 'stripe', '~> 15.1'
 
 # Pagination
 gem 'kaminari', '~> 1.2.2'
