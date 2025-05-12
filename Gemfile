@@ -68,7 +68,7 @@ gem "devise", "~> 4.9.4"
 
 gem "doorkeeper", "~> 5.8"
 
-gem "fast-mcp", "~> 1.3"
+gem "fast-mcp", "~> 1.4"
 
 # Add HTTParty for HTTP requests
 gem 'httparty'
