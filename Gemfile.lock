@@ -102,7 +102,7 @@ GEM
     crass (1.0.6)
     csv (3.3.4)
     date (3.4.1)
-    debug (1.10.0)
+    debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     devise (4.9.4)
@@ -145,6 +145,7 @@ GEM
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
     ed25519 (1.4.0)
+    erb (5.0.1)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
@@ -270,7 +271,7 @@ GEM
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
-    psych (5.2.4)
+    psych (5.2.6)
       date
       stringio
     public_suffix (6.0.2)
@@ -317,7 +318,8 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.13.1)
+    rdoc (6.14.1)
+      erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     reline (0.6.1)
